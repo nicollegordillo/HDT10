@@ -40,7 +40,49 @@ public class Aplicacion {
     }
 
     public String Centro(){
-        return "";
+        fw = new FloydWarshall(distancias, recorridos, vertices, size + 1);
+        fw.calcularRutas();
+        int[][] distances = fw.getDistancias();
+        String resultado="";
+        ArrayList<Integer> eccentricities=new ArrayList<>();
+        for (int col = 0; col < distances[0].length; col++) {
+            int max = Integer.MIN_VALUE; // Initialize max to the lowest possible value
+            boolean hasZero = false;
+            boolean hasNonZero = false;
+
+            // Iterate over the elements in the column
+            for (int row = 0; row < distances.length; row++) {
+                if (distances[row][col] == 0) {
+                    hasZero = true;
+                } else if (distances[row][col] != 1000 && distances[row][col] > max) {
+                    max = distances[row][col]; // Update max if a larger value is found and not equal to 1000
+                    hasNonZero = true;
+                }
+            }
+
+            if (hasZero && !hasNonZero) {
+                max = 1000;
+            }
+
+            eccentricities.add(max); // Add max to the ArrayList
+        }
+        int min = eccentricities.get(0); // Initialize min to the first element of the ArrayList
+        // Iterate over the remaining elements
+        for (int i = 1; i < eccentricities.size(); i++) {
+            int currentNumber = eccentricities.get(i);
+            if (currentNumber < min) {
+                min = currentNumber; // Update min if a smaller value is found
+            }
+        }
+        for (int i = 0; i < eccentricities.size(); i++) {
+            if (eccentricities.get(i) == min) {
+                resultado+= "\n"+vertices[i];
+            }
+        }
+        
+
+        // Devuelve el vertice
+        return resultado;
     }
 
     public String llenarMatrizDistancias(String filePath) {

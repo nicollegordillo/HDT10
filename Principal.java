@@ -30,6 +30,7 @@ public class Principal {
 
             }
             else if(op1==2){
+                System.out.println("Centro del grafo: "+ap.Centro());
 
             }
             else if(op1==3){
