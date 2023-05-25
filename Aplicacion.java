@@ -9,8 +9,10 @@ public class Aplicacion {
     private String[] vertices;
     private int size;
     FloydWarshall fw;
+    private ArrayList<String[]> lineas;
 
     public Aplicacion() {
+        lineas= new ArrayList<>();
     }
 
     public String rutamascorta(String origen, String destino){
@@ -94,7 +96,6 @@ public class Aplicacion {
             //String[] cities = new String[size]; // Array to store city names
             ArrayList<String> columnas= new ArrayList<>();
             ArrayList<String> filas= new ArrayList<>();
-            ArrayList<String[]> lineas= new ArrayList<>();
             String line;
 
             while ((line = br.readLine()) != null) {
@@ -228,4 +229,48 @@ public class Aplicacion {
     public int getSize() {
         return size;
     }
+    public void modificarDistancia(String ciudad1, String ciudad2, int posicion) {
+    int indiceCiudad1 = -1;
+    int indiceCiudad2 = -1;
+
+    // Buscar los índices de las ciudades en el arreglo de vértices
+    for (int i = 0; i < vertices.length; i++) {
+        if (vertices[i].equals(ciudad1)) {
+            indiceCiudad1 = i;
+        } else if (vertices[i].equals(ciudad2)) {
+            indiceCiudad2 = i;
+        }
+
+        // Si se encontraron ambos índices, salir del bucle
+        if (indiceCiudad1 != -1 && indiceCiudad2 != -1) {
+            break;
+        }
+    }
+
+    // Verificar si se encontraron las ciudades en el arreglo de vértices
+    if (indiceCiudad1 != -1 && indiceCiudad2 != -1) {
+        // Obtener el arreglo de cadenas correspondiente al par de ciudades en el ArrayList
+        String[] tokens = lineas.get(indiceCiudad1 * vertices.length + indiceCiudad2);
+
+        // Obtener los valores de distancia actuales
+        int[] distanciasActuales = new int[tokens.length - 2];
+        for (int i = 0; i < distanciasActuales.length; i++) {
+            distanciasActuales[i] = Integer.parseInt(tokens[i + 2]);
+        }
+
+        // Modificar el valor de la distancia en la matriz de distancias
+        int nuevaDistancia = distanciasActuales[posicion];
+        distancias[indiceCiudad1][indiceCiudad2] = nuevaDistancia;
+        distancias[indiceCiudad2][indiceCiudad1] = nuevaDistancia;
+
+        // Actualizar la matriz de recorridos si es necesario
+        if (nuevaDistancia < 1000) {
+            recorridos[indiceCiudad1][indiceCiudad2] = ciudad2;
+            recorridos[indiceCiudad2][indiceCiudad1] = ciudad1;
+        }
+    }
+}
+
+    
+    
 }
