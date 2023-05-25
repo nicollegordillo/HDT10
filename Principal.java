@@ -13,7 +13,7 @@ public class Principal {
         
         System.out.println("Bienvenido al programa que calcula la ruta más corta entre dos ciudades");
         System.out.println("--------Matrices iniciales---------");
-        System.out.println(ap.llenarMatrizDistancias(filePath));
+        System.out.println(ap.llenarMatrizDistancias(filePath, 3));
         System.out.println(ap.llenarMatrizRecorridos(filePath));
         while(continuar){
             System.out.println("Elija la opción que desea");

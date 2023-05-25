@@ -85,7 +85,7 @@ public class Aplicacion {
         return resultado;
     }
 
-    public String llenarMatrizDistancias(String filePath) {
+    public String llenarMatrizDistancias(String filePath, int clima) {
         String resultado="";
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             size = contarLineas(filePath);
@@ -127,7 +127,7 @@ public class Aplicacion {
             for (String[] tokens : lineas) {
                 String city1 = tokens[0];
                 String city2 = tokens[1];
-                int distance = Integer.parseInt(tokens[2]);
+                int distance = Integer.parseInt(tokens[clima]);
     
                 int rowIndex = filas.indexOf(city1);
                 int columnIndex = columnas.indexOf(city2);
