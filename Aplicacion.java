@@ -230,47 +230,42 @@ public class Aplicacion {
         return size;
     }
     public void modificarDistancia(String ciudad1, String ciudad2, int posicion) {
-    int indiceCiudad1 = -1;
-    int indiceCiudad2 = -1;
-
-    // Buscar los índices de las ciudades en el arreglo de vértices
-    for (int i = 0; i < vertices.length; i++) {
-        if (vertices[i].equals(ciudad1)) {
-            indiceCiudad1 = i;
-        } else if (vertices[i].equals(ciudad2)) {
-            indiceCiudad2 = i;
+        int indiceCiudad1 = -1;
+        int indiceCiudad2 = -1;
+    
+        // Buscar los índices de las ciudades en el arreglo de vértices
+        for (int i = 0; i < vertices.length; i++) {
+            if (vertices[i].equals(ciudad1)) {
+                indiceCiudad1 = i;
+            } else if (vertices[i].equals(ciudad2)) {
+                indiceCiudad2 = i;
+            }
         }
-
-        // Si se encontraron ambos índices, salir del bucle
+    
+        // Verificar si se encontraron las ciudades en el arreglo de vértices
         if (indiceCiudad1 != -1 && indiceCiudad2 != -1) {
-            break;
+            // Obtener el arreglo de cadenas correspondiente al par de ciudades en el ArrayList
+            String[] tokens = lineas.get(indiceCiudad1 * vertices.length + indiceCiudad2 - 1);
+    
+            // Modificar el valor de la distancia en el arreglo de cadenas
+            int nuevaDistancia = Integer.parseInt(tokens[posicion]);
+            tokens[posicion] = Integer.toString(nuevaDistancia);
+    
+            // Actualizar la lista de líneas con el arreglo modificado
+            lineas.set(indiceCiudad1 * vertices.length + indiceCiudad2 - 1, tokens);
+    
+            // Modificar el valor de la distancia en la matriz de distancias
+            distancias[indiceCiudad1][indiceCiudad2] = nuevaDistancia;
+            distancias[indiceCiudad2][indiceCiudad1] = nuevaDistancia;
+    
+            // Actualizar la matriz de recorridos si es necesario
+            if (nuevaDistancia < 1000) {
+                recorridos[indiceCiudad1][indiceCiudad2] = ciudad2;
+                recorridos[indiceCiudad2][indiceCiudad1] = ciudad1;
+            }
         }
     }
-
-    // Verificar si se encontraron las ciudades en el arreglo de vértices
-    if (indiceCiudad1 != -1 && indiceCiudad2 != -1) {
-        // Obtener el arreglo de cadenas correspondiente al par de ciudades en el ArrayList
-        String[] tokens = lineas.get(indiceCiudad1 * vertices.length + indiceCiudad2);
-
-        // Obtener los valores de distancia actuales
-        int[] distanciasActuales = new int[tokens.length - 2];
-        for (int i = 0; i < distanciasActuales.length; i++) {
-            distanciasActuales[i] = Integer.parseInt(tokens[i + 2]);
-        }
-
-        // Modificar el valor de la distancia en la matriz de distancias
-        int nuevaDistancia = distanciasActuales[posicion];
-        distancias[indiceCiudad1][indiceCiudad2] = nuevaDistancia;
-        distancias[indiceCiudad2][indiceCiudad1] = nuevaDistancia;
-
-        // Actualizar la matriz de recorridos si es necesario
-        if (nuevaDistancia < 1000) {
-            recorridos[indiceCiudad1][indiceCiudad2] = ciudad2;
-            recorridos[indiceCiudad2][indiceCiudad1] = ciudad1;
-        }
-    }
-}
-
+    
     
     
 }
