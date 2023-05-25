@@ -1,6 +1,9 @@
 import java.io.FileNotFoundException;
 import java.util.Scanner;
-
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
 public class Principal {
     public static void main(String[] args) throws FileNotFoundException {
         String filePath = "logistica.txt";
@@ -10,11 +13,22 @@ public class Principal {
         String destino="";
         Scanner teclado = new Scanner(System.in);
         Aplicacion ap = new Aplicacion();
-        
+        //lineas
+        ArrayList<String> lineas= new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {;
+            String line;
+
+            while ((line = br.readLine()) != null) 
+            {
+                lineas.add(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
        // System.out.println("Bienvenido al programa que calcula la ruta más corta entre dos ciudades");
       //  System.out.println("--------Matrices iniciales---------");
-        System.out.println(ap.llenarMatrizDistancias(filePath, 2));
-        System.out.println(ap.llenarMatrizRecorridos(filePath));
+        System.out.println(ap.llenarMatrizDistancias(lineas));
+        System.out.println(ap.llenarMatrizRecorridos(lineas));
         while(continuar){
             System.out.println("Elija la opción que desea");
             System.out.println("1. Ruta más corta entre dos ciudades \n2. Mostrar el centro \n3. Modificar \n4. Salir");
@@ -47,20 +61,31 @@ public class Principal {
                 }
                 else if(c==2)
                 {
-                    System.out.println("Ingrese el origen: ");
-                    origen=teclado.nextLine();
-                    System.out.println("Ingrese el destino: ");
-                    destino=teclado.nextLine();
-                    System.out.println("Ingrese las distancias (normal, lluvia, nieve y tormenta): ");
-                    String dist=teclado.nextLine();
-                    System.out.println(ap.rutamascorta(origen, destino));
+                   // System.out.println("Ingrese el origen: ");
+                   // origen=teclado.nextLine();
+                   // System.out.println("Ingrese el destino: ");
+                   // destino=teclado.nextLine();
+                   // System.out.println("Ingrese las distancias (normal, lluvia, nieve y tormenta): ");
+                   // String dist=teclado.nextLine();
+                   ArrayList<String> lineas1= ap.get_lineas();
+                   lineas1.add("Lima Santiago 15 18 30 50");
+                   System.out.println(ap.llenarMatrizDistancias(lineas1));
+                   System.out.println(ap.llenarMatrizRecorridos(lineas1));
+                   
                 }
                 else if (c==3)
                 {
-                    System.out.println("Ingrese ciudad 1: ");
-                    origen=teclado.nextLine();
-                    System.out.println("Ingrese ciudad 2: ");
-                    destino=teclado.nextLine();
+                   // System.out.println("Ingrese ciudad 1: ");
+                  //  origen=teclado.nextLine();
+                  //  origen=teclado.nextLine();
+                  //  System.out.println("Ingrese ciudad 2: ");
+                  //  destino=teclado.nextLine();
+                    String value="Lima Santiago";
+                    ap.eliminar_conexion(value);
+                    ArrayList<String> lineas2 = ap.get_lineas();
+                    System.out.println(lineas2);
+                    System.out.println(ap.llenarMatrizDistancias(lineas2));
+                    System.out.println(ap.llenarMatrizRecorridos(lineas2));
                 }
                 else
                 {

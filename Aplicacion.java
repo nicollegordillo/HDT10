@@ -10,6 +10,7 @@ public class Aplicacion {
     private int size;
     FloydWarshall fw;
     private ArrayList<String[]> lineas;
+    private ArrayList<String> lineas1;
 
     public Aplicacion() {
         lineas= new ArrayList<>();
@@ -87,19 +88,20 @@ public class Aplicacion {
         return resultado;
     }
 
-    public String llenarMatrizDistancias(String filePath, int clima) {
+    public String llenarMatrizDistancias( ArrayList<String> lineas1 ) {
+        lineas= new ArrayList<>();
         String resultado="";
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-            size = contarLineas(filePath);
+            this.lineas1=lineas1;
+            size = lineas1.size();
             distancias = new int[size][size];
     
             //String[] cities = new String[size]; // Array to store city names
             ArrayList<String> columnas= new ArrayList<>();
             ArrayList<String> filas= new ArrayList<>();
-            String line;
-
-            while ((line = br.readLine()) != null) {
-                String[] tokens = line.split(" ");
+            int k=size;
+            int cont=0;
+            while (k!= 0) {
+                String[] tokens = lineas1.get(cont).split(" ");
                 String city1 = tokens[0];
                 String city2 = tokens[1];
                 lineas.add(tokens);
@@ -112,6 +114,8 @@ public class Aplicacion {
                 if (!containsCity(columnas, city2)) {
                     columnas.add(city2);
                 }
+                k=k-1;
+                cont=cont+1;
             }
             filas=columnas;
             distancias = new int[columnas.size()][columnas.size()];
@@ -128,7 +132,7 @@ public class Aplicacion {
             for (String[] tokens : lineas) {
                 String city1 = tokens[0];
                 String city2 = tokens[1];
-                int distance = Integer.parseInt(tokens[clima]);
+                int distance = Integer.parseInt(tokens[2]);
     
                 int rowIndex = filas.indexOf(city1);
                 int columnIndex = columnas.indexOf(city2);
@@ -148,9 +152,6 @@ public class Aplicacion {
                 vertices[i]=columnas.get(i);
             }
             
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         return resultado;
     }
 
@@ -163,18 +164,17 @@ public class Aplicacion {
         return false;
     }
 
-    public String llenarMatrizRecorridos(String filePath) {
+    public String llenarMatrizRecorridos(ArrayList<String> lineas1) {
         String resultado="";
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-            size = contarLineas(filePath);
-            
-    
+            size = lineas1.size();
+            this.lineas1=lineas1;
             //String[] cities = new String[size]; // Array to store city names
             ArrayList<String> cities= new ArrayList<>();
-            String line;
-
-            while ((line = br.readLine()) != null) {
-                String[] tokens = line.split(" ");
+            int k=size;
+            System.out.println(size);
+            int cont=0;
+            while (k!= 0) {
+                String[] tokens = lineas1.get(cont).split(" ");
                 String city1 = tokens[0];
                 String city2 = tokens[1];
     
@@ -186,6 +186,8 @@ public class Aplicacion {
                 if (!containsCity(cities, city2)) {
                     cities.add(city2);
                 }
+                k=k-1;
+                cont=cont+1;
             }
             recorridos = new String[cities.size()][cities.size()];
             for(int i=0;i<cities.size();i++){
@@ -202,20 +204,12 @@ public class Aplicacion {
                 resultado+="\n";
                 
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         return resultado;
     }
 
-    private int contarLineas(String filePath) throws IOException {
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-            int lines = 0;
-            while (br.readLine() != null) {
-                lines++;
-            }
-            return lines;
-        }
+    public ArrayList<String> get_lineas()  
+    {
+       return this.lineas1;
     }
 
     public int[][] getDistancias() {
@@ -265,7 +259,14 @@ public class Aplicacion {
             }
         }
     }
-    
-    
+    public void eliminar_conexion(String valor) {
+        for (String elemento : lineas1) {
+            if (elemento.contains(valor)) {
+                this.lineas1.remove(elemento);
+                System.out.println("Se eliminó la conexión: " + elemento);
+                break;
+            }
+        }
+    }
     
 }
