@@ -46,7 +46,7 @@ public class Principal {
 
             }
             else if(op1==3){
-                System.out.println("Ingrese la modificación que desea realizar: \n1. Clima \n3. Conexión nueva \n4. Eliminar una conexión");
+                System.out.println("Ingrese la modificación que desea realizar: \n1. Clima \n2. Conexión nueva \n3. Eliminar una conexión");
                 int c=teclado.nextInt();
                 if (c==1)
                 {
@@ -61,26 +61,29 @@ public class Principal {
                 }
                 else if(c==2)
                 {
-                   // System.out.println("Ingrese el origen: ");
-                   // origen=teclado.nextLine();
-                   // System.out.println("Ingrese el destino: ");
-                   // destino=teclado.nextLine();
-                   // System.out.println("Ingrese las distancias (normal, lluvia, nieve y tormenta): ");
-                   // String dist=teclado.nextLine();
+                   System.out.println("Ingrese el origen: ");
+                   origen=teclado.nextLine();
+                   origen=teclado.nextLine();
+                   System.out.println("Ingrese el destino: ");
+                   destino=teclado.nextLine();
+                   System.out.println("Ingrese las distancias separadas por un espacio (normal, lluvia, nieve y tormenta): ");
+                   String dist=teclado.nextLine();
                    ArrayList<String> lineas1= ap.get_lineas();
-                   lineas1.add("Lima Santiago 15 18 30 50");
+                   String val=origen+" "+destino+" "+dist;
+                   //lineas1.add("Lima Santiago 15 18 30 50");
+                   lineas1.add(val);
                    System.out.println(ap.llenarMatrizDistancias(lineas1));
                    System.out.println(ap.llenarMatrizRecorridos(lineas1));
                    
                 }
                 else if (c==3)
                 {
-                   // System.out.println("Ingrese ciudad 1: ");
-                  //  origen=teclado.nextLine();
-                  //  origen=teclado.nextLine();
-                  //  System.out.println("Ingrese ciudad 2: ");
-                  //  destino=teclado.nextLine();
-                    String value="Lima Santiago";
+                    System.out.println("Ingrese ciudad 1: ");
+                    origen=teclado.nextLine();
+                    origen=teclado.nextLine();
+                    System.out.println("Ingrese ciudad 2: ");
+                    destino=teclado.nextLine();
+                    String value=origen+" "+destino;
                     ap.eliminar_conexion(value);
                     ArrayList<String> lineas2 = ap.get_lineas();
                     System.out.println(lineas2);
