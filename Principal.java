@@ -70,7 +70,6 @@ public class Principal {
                    String dist=teclado.nextLine();
                    ArrayList<String> lineas1= ap.get_lineas();
                    String val=origen+" "+destino+" "+dist;
-                   //lineas1.add("Lima Santiago 15 18 30 50");
                    lineas1.add(val);
                    System.out.println(ap.llenarMatrizDistancias(lineas1));
                    System.out.println(ap.llenarMatrizRecorridos(lineas1));

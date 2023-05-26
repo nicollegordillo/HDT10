@@ -1,6 +1,3 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class Aplicacion {
@@ -18,10 +15,10 @@ public class Aplicacion {
 
     public String rutamascorta(String origen, String destino){
         String resultado = "";
-        fw = new FloydWarshall(distancias, recorridos, vertices, size + 1);
+        fw = new FloydWarshall(distancias, recorridos, vertices, vertices.length);
         fw.calcularRutas();
-        for (int i = 0; i < size + 1; i++) {
-            for (int j = 0; j < size + 1; j++) {
+        for (int i = 0; i < vertices.length; i++) {
+            for (int j = 0; j < vertices.length; j++) {
                 if(origen.equals(destino)){
                     resultado+=origen+" -> "+fw.getRecorridos()[i][j];
                     break;
@@ -31,8 +28,8 @@ public class Aplicacion {
                 }
             }
         }
-        for (int i = 0; i < size + 1; i++) {
-            for (int j = 0; j < size + 1; j++) {
+        for (int i = 0; i < vertices.length; i++) {
+            for (int j = 0; j < vertices.length; j++) {
                 if(vertices[i].equals(origen)&&vertices[j].equals(destino)){
                     resultado+="\nTiempo Normal: "+fw.getDistancias()[i][j];
                     break;
@@ -43,22 +40,21 @@ public class Aplicacion {
     }
 
     public String Centro(){
-        fw = new FloydWarshall(distancias, recorridos, vertices, size + 1);
+        fw = new FloydWarshall(distancias, recorridos, vertices, vertices.length);
         fw.calcularRutas();
         int[][] distances = fw.getDistancias();
         String resultado="";
         ArrayList<Integer> eccentricities=new ArrayList<>();
         for (int col = 0; col < distances[0].length; col++) {
-            int max = Integer.MIN_VALUE; // Initialize max to the lowest possible value
+            int max = Integer.MIN_VALUE; 
             boolean hasZero = false;
             boolean hasNonZero = false;
 
-            // Iterate over the elements in the column
             for (int row = 0; row < distances.length; row++) {
                 if (distances[row][col] == 0) {
                     hasZero = true;
                 } else if (distances[row][col] != 1000 && distances[row][col] > max) {
-                    max = distances[row][col]; // Update max if a larger value is found and not equal to 1000
+                    max = distances[row][col]; 
                     hasNonZero = true;
                 }
             }
@@ -67,14 +63,14 @@ public class Aplicacion {
                 max = 1000;
             }
 
-            eccentricities.add(max); // Add max to the ArrayList
+            eccentricities.add(max); // Agrega el máximo al arraylist
         }
-        int min = eccentricities.get(0); // Initialize min to the first element of the ArrayList
-        // Iterate over the remaining elements
+        int min = eccentricities.get(0); 
+        
         for (int i = 1; i < eccentricities.size(); i++) {
             int currentNumber = eccentricities.get(i);
             if (currentNumber < min) {
-                min = currentNumber; // Update min if a smaller value is found
+                min = currentNumber; // Actualiza el minimo si encuentra uno menor
             }
         }
         for (int i = 0; i < eccentricities.size(); i++) {
@@ -95,7 +91,6 @@ public class Aplicacion {
             size = lineas1.size();
             distancias = new int[size][size];
     
-            //String[] cities = new String[size]; // Array to store city names
             ArrayList<String> columnas= new ArrayList<>();
             ArrayList<String> filas= new ArrayList<>();
             int k=size;
@@ -106,7 +101,7 @@ public class Aplicacion {
                 String city2 = tokens[1];
                 lineas.add(tokens);
     
-                // Store unique city names in the array
+                // Guarda los nombres
                 if (!containsCity(columnas, city1)) {
                     columnas.add(city1);
                     
@@ -168,7 +163,6 @@ public class Aplicacion {
         String resultado="";
             size = lineas1.size();
             this.lineas1=lineas1;
-            //String[] cities = new String[size]; // Array to store city names
             ArrayList<String> cities= new ArrayList<>();
             int k=size;
             System.out.println(size);
@@ -178,7 +172,7 @@ public class Aplicacion {
                 String city1 = tokens[0];
                 String city2 = tokens[1];
     
-                // Store unique city names in the array
+                // Guarda los nombres
                 if (!containsCity(cities, city1)) {
                     cities.add(city1);
                     
@@ -226,7 +220,7 @@ public class Aplicacion {
     public void modificarDistancia(String ciudad1, String ciudad2, int posicion) {
         int indiceCiudad1 = -1;
         int indiceCiudad2 = -1;
-    
+        String[] tokens =new String[1];
         // Buscar los índices de las ciudades en el arreglo de vértices
         for (int i = 0; i < vertices.length; i++) {
             if (vertices[i].equals(ciudad1)) {
@@ -239,14 +233,22 @@ public class Aplicacion {
         // Verificar si se encontraron las ciudades en el arreglo de vértices
         if (indiceCiudad1 != -1 && indiceCiudad2 != -1) {
             // Obtener el arreglo de cadenas correspondiente al par de ciudades en el ArrayList
-            String[] tokens = lineas.get(indiceCiudad1 * vertices.length + indiceCiudad2 - 1);
+            for(int i =0;i<lineas.size();i++){
+                if(lineas.get(i)[0].equals(ciudad1)&&lineas.get(i)[1].equals(ciudad2)){
+                     tokens = lineas.get(i);
+                }
+            }
     
             // Modificar el valor de la distancia en el arreglo de cadenas
             int nuevaDistancia = Integer.parseInt(tokens[posicion]);
             tokens[posicion] = Integer.toString(nuevaDistancia);
     
             // Actualizar la lista de líneas con el arreglo modificado
-            lineas.set(indiceCiudad1 * vertices.length + indiceCiudad2 - 1, tokens);
+            for(int i =0;i<lineas.size();i++){
+                if(lineas.get(i)[0].equals(ciudad1)&&lineas.get(i)[1].equals(ciudad2)){
+                    lineas.set(i, tokens);
+                }
+            }
     
             // Modificar el valor de la distancia en la matriz de distancias
             distancias[indiceCiudad1][indiceCiudad2] = nuevaDistancia;
