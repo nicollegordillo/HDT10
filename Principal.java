@@ -46,7 +46,7 @@ public class Principal {
 
             }
             else if(op1==3){
-                System.out.println("Ingrese la modificación que desea realizar: \n1. Clima \n2. Conexión nueva \n3. Eliminar una conexión");
+                System.out.println("Ingrese la modificación que desea realizar: \n1. Clima \n2. Conexión nueva \n3. Eliminar una conexión por trafico");
                 int c=teclado.nextInt();
                 if (c==1)
                 {
